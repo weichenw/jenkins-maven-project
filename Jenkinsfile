@@ -8,7 +8,7 @@ pipeline{
         stage('Build'){
             steps{
                 echo "========Maven Clean======="
-                sh 'mvn clean package checkstyle:checkstyle com.github.spotbugs:spotbugs-maven-plugin:3.1.11:spotbug'
+                sh 'mvn clean package'
             }
             post{
                 always{
@@ -24,6 +24,12 @@ pipeline{
             }
         }
         
+        stage ('Analysis') {
+            steps {
+                sh 'mvn --batch-mode -V -U -e checkstyle:checkstyle com.github.spotbugs:spotbugs-maven-plugin:3.1.11:spotbugs'
+            }
+        }
+
         stage('Deploy to Staging'){
             steps {
                 build job: 'deploy-to-staging-v2'
