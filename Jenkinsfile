@@ -25,7 +25,7 @@ pipeline{
         }
         stage ('Analysis') {
             steps {
-                sh 'mvn --batch-mode -V -U -e checkstyle:checkstyle spotbugs:spotbugs'
+                sh 'mvn --batch-mode -V -U -e checkstyle:checkstyle com.github.spotbugs:spotbugs-maven-plugin:3.1.11:spotbug'
             }
         }
 
