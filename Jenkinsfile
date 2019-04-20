@@ -3,7 +3,8 @@ pipeline{
     stages{
         stage('Build'){
             steps{
-                echo "========executing A========"
+                echo "========Create war file========"
+                sh  'mvn clean package'
             }
             post{
                 always{
