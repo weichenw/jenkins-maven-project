@@ -23,10 +23,17 @@ pipeline{
                 }
             }
         }
-        
+
         stage ('Analysis') {
             steps {
                 sh 'mvn --batch-mode -V -U -e checkstyle:checkstyle com.github.spotbugs:spotbugs-maven-plugin:3.1.11:spotbugs'
+            }
+            post {
+                always {
+                recordIssues enabledForFailure: true, tools: [mavenConsole(), java(), javaDoc()]
+                recordIssues enabledForFailure: true, tool: checkStyle()
+                recordIssues enabledForFailure: true, tool: spotBugs()
+                }
             }
         }
 
@@ -53,14 +60,6 @@ pipeline{
                     echo '========Deployment failed========'
                 }
             }
-        }
-    }
-
-    post {
-        always {
-            recordIssues enabledForFailure: true, tools: [mavenConsole(), java(), javaDoc()]
-            recordIssues enabledForFailure: true, tool: checkStyle()
-            recordIssues enabledForFailure: true, tool: spotBugs()
         }
     }
 }
