@@ -23,6 +23,12 @@ pipeline{
                 }
             }
         }
+        stage ('Analysis') {
+            steps {
+                sh 'mvn --batch-mode -V -U -e checkstyle:checkstyle spotbugs:spotbugs'
+            }
+        }
+
         stage('Deploy to Staging'){
             steps {
                 build job: 'deploy-to-staging-v2'
@@ -46,6 +52,14 @@ pipeline{
                     echo '========Deployment failed========'
                 }
             }
+        }
+    }
+
+    post {
+        always {
+            recordIssues enabledForFailure: true, tools: [mavenConsole(), java(), javaDoc()]
+            recordIssues enabledForFailure: true, tool: checkStyle()
+            recordIssues enabledForFailure: true, tool: spotBugs()
         }
     }
 }
