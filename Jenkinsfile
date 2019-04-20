@@ -3,14 +3,16 @@ pipeline{
     stages{
         stage('Build'){
             steps{
-                echo "========executing A========"
+                echo "========Maven Clean======="
+                sh 'mvn clean package'
             }
             post{
                 always{
-                    echo "========always========"
+                    echo "========always display========"
                 }
                 success{
-                    echo "========A executed successfully========"
+                    echo "========Now Archiving========"
+                    archiveArtifacts artifacts: '**/target/*.war'
                 }
                 failure{
                     echo "========A execution failed========"
