@@ -8,7 +8,7 @@ pipeline{
         stage('Build'){
             steps{
                 echo "========Maven Clean======="
-                sh 'mvn clean package'
+                sh 'mvn clean package-v2'
             }
             post{
                 always{
